@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import api from "../../shared/api";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 import { BookOpen, ChevronRight, Star } from "lucide-react";
 
 export default function FeaturedCoursesStrip() {

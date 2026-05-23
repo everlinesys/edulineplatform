@@ -1,4 +1,4 @@
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 
 export default function StudentExplore() {
   const brand = useBranding();

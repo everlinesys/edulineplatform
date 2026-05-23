@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import api from "../../shared/api";
 import { getUser } from "../../shared/auth";
 import VideoPlayer from "../../shared/video/VideoPlayer";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 
 export default function CourseDetails() {
   const { courseId } = useParams();

@@ -8,7 +8,11 @@
 
     "logo": "/logo.png",
     "students": "500+",
+    "metaTitle": "CMBS | Council for Mind and Behavioural Studies",
 
+    "metaDescription": "Professional platform for psychology, behavioural science, and human development education.",
+
+    "favicon": "/favicon.ico",
     "colors": {
       "primary": "#1e3a8a",
       "accent": "#ffff"
@@ -109,6 +113,78 @@
       "address": "India",
       "supportName": "CMBS Support Team",
       "image": "/support.jpg"
+    },
+    "about": {
+      "hero": {
+        "title": "About CMBS",
+        "subtitle": "Advancing the science of mind, behaviour, and human potential.",
+        "image": "/hero.jpg"
+      },
+
+      "intro": {
+        "title": "Council for Mind and Behavioural Studies",
+        "description": [
+          "CMBS is an autonomous professional council dedicated to promoting education, research, and excellence in psychology and behavioural sciences.",
+          "We bridge academic knowledge with real-world application through structured programs, research, and professional training."
+        ],
+
+        "image": "/hero.jpg"
+      },
+
+      "objectives": {
+        "title": "Our Objectives",
+
+        "items": [
+          "Promote psychology & behavioural education",
+          "Encourage research & innovation",
+          "Provide professional training",
+          "Organize seminars & workshops",
+          "Offer certifications & diplomas",
+          "Support mental wellness awareness"
+        ]
+      },
+
+      "programs": {
+        "title": "Our Programs",
+
+        "items": [
+          "Certificate Courses",
+          "Diploma & Advanced Programs",
+          "Webinars & Seminars",
+          "Research Initiatives",
+          "Internship Programs"
+        ],
+
+        "image": "/hero.jpg"
+      },
+
+      "values": {
+        "title": "Our Core Values",
+
+        "items": [
+          "Integrity",
+          "Academic Excellence",
+          "Innovation",
+          "Social Responsibility"
+        ]
+      },
+
+      "quality": {
+        "title": "Quality Policy",
+
+        "description": [
+          "We ensure academic credibility, continuous improvement, and evidence-based learning in all programs.",
+          "Our focus is delivering high-quality education with real-world relevance and professional impact."
+        ],
+
+        "image": "/hero.jpg"
+      },
+
+      "commitment": {
+        "title": "Our Commitment",
+
+        "description": "We believe understanding the human mind is essential for a better society. Through education and research, we develop emotionally intelligent, self-aware individuals who create meaningful impact."
+      }
     }
   }
 }

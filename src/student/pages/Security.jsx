@@ -1,4 +1,4 @@
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 import { ShieldCheck, Lock, AlertTriangle, DownloadCloud, EyeOff, KeyRound } from "lucide-react";
 
 export default function StudentSecurity() {

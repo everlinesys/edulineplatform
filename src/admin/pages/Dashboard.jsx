@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../shared/api";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 import { Users, Book, IndianRupee, TrendingUp } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -88,7 +88,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* ===== STATS ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-3 md:grid-cols-3 gap:2 md:gap-8">
         <StatCard
           title="Portfolio"
           value={stats.courses.total}

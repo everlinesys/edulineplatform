@@ -1,105 +1,559 @@
-import { useState } from "react";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useEffect, useState } from "react";
+
+import api from "../../shared/api";
+
+import {
+  useBranding,
+} from "../../shared/hooks/BrandingContext";
 
 export default function AdminSettings() {
-  const brand = useBranding();
-  const primary = brand.colors?.primary || "#111827";
+  const brand =
+    useBranding();
 
-  const [showModal, setShowModal] = useState(false);
+  const primary =
+    brand?.colors?.primary ||
+    "#111827";
 
-  const restrictedAction = () => {
-    setShowModal(true);
-    setTimeout(() => setShowModal(false), 3000);
-  };
+  const [saving, setSaving] =
+    useState(false);
+
+  const [saved, setSaved] =
+    useState(false);
+
+  const [form, setForm] =
+    useState({
+      siteName: "",
+      tagline: "",
+
+      metaTitle: "",
+      metaDescription: "",
+
+      logo: "",
+      favicon: "",
+
+      primaryColor: "",
+      accentColor: "",
+
+      heroTitle: "",
+      heroSubtitle: "",
+      heroImage: "",
+
+      previewTitle: "",
+      previewHighlight: "",
+      previewDescription: "",
+
+      email: "",
+      phone: "",
+      whatsapp: "",
+      address: "",
+    });
+
+  /* =========================================
+     LOAD
+  ========================================= */
+
+  useEffect(() => {
+    if (!brand) return;
+
+    setForm({
+      siteName:
+        brand.siteName || "",
+
+      tagline:
+        brand.tagline || "",
+
+      metaTitle:
+        brand.metaTitle || "",
+
+      metaDescription:
+        brand.metaDescription ||
+        "",
+
+      logo:
+        brand.logo || "",
+
+      favicon:
+        brand.favicon || "",
+
+      primaryColor:
+        brand.colors?.primary ||
+        "",
+
+      accentColor:
+        brand.colors?.accent ||
+        "",
+
+      heroTitle:
+        brand.hero?.title ||
+        "",
+
+      heroSubtitle:
+        brand.hero
+          ?.subtitle || "",
+
+      heroImage:
+        brand.hero?.image ||
+        "",
+
+      previewTitle:
+        brand.preview
+          ?.title || "",
+
+      previewHighlight:
+        brand.preview
+          ?.highlight || "",
+
+      previewDescription:
+        brand.preview
+          ?.description || "",
+
+      email:
+        brand.contact
+          ?.email || "",
+
+      phone:
+        brand.contact
+          ?.phone || "",
+
+      whatsapp:
+        brand.contact
+          ?.whatsapp || "",
+
+      address:
+        brand.contact
+          ?.address || "",
+    });
+  }, [brand]);
+
+  /* =========================================
+     CHANGE
+  ========================================= */
+
+  function handleChange(e) {
+    setForm({
+      ...form,
+
+      [e.target.name]:
+        e.target.value,
+    });
+  }
+
+  /* =========================================
+     SAVE
+  ========================================= */
+
+  async function saveSettings() {
+    try {
+      setSaving(true);
+
+      const payload = {
+        siteName:
+          form.siteName,
+
+        tagline:
+          form.tagline,
+
+        metaTitle:
+          form.metaTitle,
+
+        metaDescription:
+          form.metaDescription,
+
+        logo: form.logo,
+
+        favicon:
+          form.favicon,
+
+        colors: {
+          primary:
+            form.primaryColor,
+
+          accent:
+            form.accentColor,
+        },
+
+        hero: {
+          title:
+            form.heroTitle,
+
+          subtitle:
+            form.heroSubtitle,
+
+          image:
+            form.heroImage,
+        },
+
+        preview: {
+          title:
+            form.previewTitle,
+
+          highlight:
+            form.previewHighlight,
+
+          description:
+            form.previewDescription,
+        },
+
+        contact: {
+          email:
+            form.email,
+
+          phone:
+            form.phone,
+
+          whatsapp:
+            form.whatsapp,
+
+          address:
+            form.address,
+        },
+      };
+
+      await api.put(
+        "/adminSettings/settings",
+        payload
+      );
+
+      setSaved(true);
+
+      setTimeout(() => {
+        setSaved(false);
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+
+      alert(
+        "Failed to save settings"
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-8">
+    <div className="max-w-5xl mx-auto p-6 space-y-8">
 
       {/* HEADER */}
       <div>
-        <h2 className="text-2xl font-bold">Settings</h2>
-        <p className="text-sm text-gray-500 mt-1">
-          Manage your institute preferences.
+
+        <h1 className="text-3xl font-bold">
+          Institute Settings
+        </h1>
+
+        <p className="text-gray-500 mt-2">
+          Configure your
+          institute branding,
+          metadata, hero
+          section, and
+          contact details.
         </p>
       </div>
 
-      {/* ===== GENERAL ===== */}
-      <Section title="General">
-        <SettingRow label="Institute Name" value={brand.siteName || "Eduline Academy"} />
-        <SettingRow label="Support Email" value={brand.contact.email || "support@everlinesys.com"} />
-        <SettingButton
-          label="Change Logo"
-          onClick={restrictedAction}
-          primary={primary}
+      {/* GENERAL */}
+      <Section title="General Information">
+
+        <Input
+          label="Institute Name"
+          name="siteName"
+          value={
+            form.siteName
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Input
+          label="Tagline"
+          name="tagline"
+          value={
+            form.tagline
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Input
+          label="Logo URL"
+          name="logo"
+          value={form.logo}
+          onChange={
+            handleChange
+          }
+        />
+
+        <Input
+          label="Favicon URL"
+          name="favicon"
+          value={
+            form.favicon
+          }
+          onChange={
+            handleChange
+          }
         />
       </Section>
 
-      {/* ===== BRANDING ===== */}
-      <Section title="Branding">
-        <SettingButton
-          label="Change Primary Color"
-          onClick={restrictedAction}
-          primary={primary}
+      {/* SEO */}
+      <Section title="SEO Metadata">
+
+        <Input
+          label="Meta Title"
+          name="metaTitle"
+          value={
+            form.metaTitle
+          }
+          onChange={
+            handleChange
+          }
         />
-        <SettingButton
-          label="Change Accent Color"
-          onClick={restrictedAction}
-          primary={primary}
+
+        <Textarea
+          label="Meta Description"
+          name="metaDescription"
+          value={
+            form.metaDescription
+          }
+          onChange={
+            handleChange
+          }
         />
       </Section>
 
-      {/* ===== SECURITY ===== */}
-      <Section title="Security">
-        <SettingButton
-          label="Change Password"
-          onClick={restrictedAction}
-          primary={primary}
+      {/* COLORS */}
+      <Section title="Brand Colors">
+
+        <Input
+          label="Primary Color"
+          name="primaryColor"
+          value={
+            form.primaryColor
+          }
+          onChange={
+            handleChange
+          }
         />
-        <SettingButton
-          label="Logout All Sessions"
-          onClick={restrictedAction}
-          primary={primary}
+
+        <Input
+          label="Accent Color"
+          name="accentColor"
+          value={
+            form.accentColor
+          }
+          onChange={
+            handleChange
+          }
         />
       </Section>
 
-      {/* ===== MODAL ===== */}
-      {showModal && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-lg text-sm">
-          You are not allowed to do that. Please contact administrator.
-        </div>
-      )}
+      {/* HERO */}
+      <Section title="Hero Section">
+
+        <Input
+          label="Hero Title"
+          name="heroTitle"
+          value={
+            form.heroTitle
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Textarea
+          label="Hero Subtitle"
+          name="heroSubtitle"
+          value={
+            form.heroSubtitle
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Input
+          label="Hero Image"
+          name="heroImage"
+          value={
+            form.heroImage
+          }
+          onChange={
+            handleChange
+          }
+        />
+      </Section>
+
+      {/* PREVIEW */}
+      <Section title="Preview Section">
+
+        <Input
+          label="Preview Title"
+          name="previewTitle"
+          value={
+            form.previewTitle
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Input
+          label="Preview Highlight"
+          name="previewHighlight"
+          value={
+            form.previewHighlight
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Textarea
+          label="Preview Description"
+          name="previewDescription"
+          value={
+            form.previewDescription
+          }
+          onChange={
+            handleChange
+          }
+        />
+      </Section>
+
+      {/* CONTACT */}
+      <Section title="Contact Information">
+
+        <Input
+          label="Email"
+          name="email"
+          value={
+            form.email
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Input
+          label="Phone"
+          name="phone"
+          value={
+            form.phone
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Input
+          label="WhatsApp"
+          name="whatsapp"
+          value={
+            form.whatsapp
+          }
+          onChange={
+            handleChange
+          }
+        />
+
+        <Textarea
+          label="Address"
+          name="address"
+          value={
+            form.address
+          }
+          onChange={
+            handleChange
+          }
+        />
+      </Section>
+
+      {/* SAVE */}
+      <div className="flex items-center gap-4">
+
+        <button
+          onClick={
+            saveSettings
+          }
+          disabled={saving}
+          className="px-6 py-3 rounded-xl text-white font-semibold"
+          style={{
+            background:
+              primary,
+          }}
+        >
+          {saving
+            ? "Saving..."
+            : "Save Settings"}
+        </button>
+
+        {saved && (
+          <div className="text-green-600 text-sm font-medium">
+            Settings saved
+            successfully.
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-/* ===== COMPONENTS ===== */
+/* =========================================
+   COMPONENTS
+========================================= */
 
-function Section({ title, children }) {
+function Section({
+  title,
+  children,
+}) {
   return (
-    <div className="bg-white border rounded-2xl p-6 space-y-4">
-      <h3 className="font-semibold">{title}</h3>
+    <div className="bg-white border rounded-2xl p-6 space-y-5">
+
+      <h2 className="text-xl font-semibold">
+        {title}
+      </h2>
+
       {children}
     </div>
   );
 }
 
-function SettingRow({ label, value }) {
+function Input({
+  label,
+  ...props
+}) {
   return (
-    <div className="flex justify-between text-sm">
-      <span className="text-gray-500">{label}</span>
-      <span className="font-medium">{value}</span>
+    <div className="space-y-2">
+
+      <label className="text-sm font-medium">
+        {label}
+      </label>
+
+      <input
+        {...props}
+        className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+      />
     </div>
   );
 }
 
-function SettingButton({ label, onClick, primary }) {
+function Textarea({
+  label,
+  ...props
+}) {
   return (
-    <button
-      onClick={onClick}
-      className="text-left w-full py-2 text-sm font-medium hover:underline"
-      style={{ color: primary }}
-    >
-      {label}
-    </button>
+    <div className="space-y-2">
+
+      <label className="text-sm font-medium">
+        {label}
+      </label>
+
+      <textarea
+        {...props}
+        rows={5}
+        className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
   );
 }

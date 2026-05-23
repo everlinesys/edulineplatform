@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { BookOpen, ArrowLeft } from "lucide-react";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 
 export default function PageNotFound() {
   const brand = useBranding();

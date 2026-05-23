@@ -6,7 +6,7 @@ import {
   MdSettings,
   MdAdd,
 } from "react-icons/md";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 import { useEffect, useState } from "react";
 import api from "../../shared/api";
 

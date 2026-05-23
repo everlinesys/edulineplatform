@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 
 export default function PublicFooter() {
   const brand = useBranding();

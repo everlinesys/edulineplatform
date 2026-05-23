@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 export default function CTASection() {
   const navigate = useNavigate();
   const brand = useBranding();

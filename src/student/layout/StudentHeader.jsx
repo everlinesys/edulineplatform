@@ -1,7 +1,7 @@
 import { MdMenu, MdNotifications, MdPerson } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../shared/auth";
-import { useBranding } from "../../shared/hooks/useBranding";
+import { useBranding } from "../../shared/hooks/brandingContext";
 
 export default function StudentHeader({ onMenuClick }) {
     const navigate = useNavigate();

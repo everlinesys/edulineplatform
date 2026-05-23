@@ -1,94 +1,140 @@
 import { Link, NavLink } from "react-router-dom";
 import { getUser } from "../../shared/auth";
-import { useBranding } from "../../shared/hooks/useBranding";
-import themes from "../../config/themes.json";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 
 export default function PublicHeader() {
   const user = getUser();
-  const brand = useBranding();
 
-  const theme = themes?.[brand.theme] || themes.darkModern;
+  const brandData = useBranding();
+
+  // FIX OLD STRUCTURE
+  const brand =
+    brandData?.default || brandData || {};
+
+  console.log("HEADER BRAND", brand);
+
+  // THEME IS ALREADY PROCESSED
+  const theme = brandData?.theme || {};
+
+  const colors = brandData?.colors || {
+    primary: "#1e3a8a",
+    accent: "#ffffff",
+  };
 
   return (
-    <header className={` shadow-sm md:px-16`} style={{ backgroundColor: "#eeecec" || brand.colors.accent , color:  "#13205f" ||brand.colors.primary  }}>
+    <header
+      className="shadow-sm md:px-16"
+      style={{
+        backgroundColor:
+          colors.accent,
+
+        color:
+          colors.primary,
+      }}
+    >
       <div className="max-w-7xl mx-auto px-3 h-16 flex items-center justify-between">
 
-        {/* Logo + Small Title */}
-        <Link to="/" className="flex items-center gap-3">
-
+        {/* LOGO */}
+        <Link
+          to="/"
+          className="flex items-center gap-3"
+        >
           {brand.logo ? (
             <img
               src={brand.logo}
-              alt={brand.siteName}
-              className="h-30 w-auto object-contain"
+              alt={
+                brand.siteName
+              }
+              className="h-12 w-auto object-contain"
             />
           ) : (
-            <div className=" h-10 w-10 bg-gray-200 rounded-lg flex items-center justify-center text-sm font-bold">
-              {brand.siteName?.charAt(0)}
+            <div className="h-10 w-10 bg-gray-200 rounded-lg flex items-center justify-center text-sm font-bold">
+              {brand.siteName?.charAt(
+                0
+              ) || "E"}
             </div>
           )}
-
-          {/* Small Title */}
-          {/* <span className={`text-sm font-semibold `}>
-            {brand.siteName}
-          </span> */}
-
         </Link>
 
-        {/* Navigation */}
-        <nav className={`hidden md:flex gap-6 text-sm `}>
-          <NavLink to="/courses" className="hover:opacity-80 transition">
+        {/* NAVIGATION */}
+        <nav className="hidden md:flex gap-6 text-sm font-medium">
+
+          <NavLink
+            to="/courses"
+            className="hover:opacity-80 transition"
+          >
             Courses
           </NavLink>
 
-          <NavLink to="/contact" className="hover:opacity-80 transition">
+          <NavLink
+            to="/contact"
+            className="hover:opacity-80 transition"
+          >
             Contact
-          </NavLink> <NavLink to="/aboutus" className="hover:opacity-80 transition">
+          </NavLink>
+
+          <NavLink
+            to="/aboutus"
+            className="hover:opacity-80 transition"
+          >
             About Us
           </NavLink>
         </nav>
 
-        {/* Auth Buttons */}
+        {/* AUTH */}
         <div className="flex items-center gap-4 text-sm">
 
           {!user && (
             <>
               <Link
                 to="/login"
-                className={` hover:opacity-80`}
+                className="hover:opacity-80"
               >
                 Login
               </Link>
 
               <Link
                 to="/register"
-                className={`${theme.button.primary} px-4 py-2 bg-[#F59E0B] ${theme.shape.buttonRadius}`}
-                style={{ background: brand.colors?.primary || "#F59E0B", color: brand.colors?.accent || "#000000" }}
+                className={`${theme.button?.primary || ""
+                  } px-4 py-2 ${theme.shape?.buttonRadius || "rounded-xl"
+                  }`}
+                style={{
+                  background:
+                    colors.primary,
+
+                  color:
+                    colors.accent,
+                }}
               >
                 Register
               </Link>
             </>
           )}
 
-          {user?.role === "student" && (
-            <Link
-              to="/student"
-              className={`${theme.button.secondary} px-4 py-2 ${theme.shape.buttonRadius}`}
-            >
-              Dashboard
-            </Link>
-          )}
+          {user?.role ===
+            "student" && (
+              <Link
+                to="/student"
+                className={`${theme.button?.secondary || ""
+                  } px-4 py-2 ${theme.shape?.buttonRadius || "rounded-xl"
+                  }`}
+              >
+                Dashboard
+              </Link>
+            )}
 
-          {user?.role === "ADMIN" && (
-            <Link
-              to="/admin"
-              className={`${theme.button.secondary} px-4 py-2 ${theme.shape.buttonRadius}`}
-            >
-              Admin Panel
-            </Link>
-          )}
+          {user?.role ===
+            "ADMIN" && (
+              <Link
+                to="/admin"
+                className={`${theme.button?.secondary || ""
+                  } px-4 py-2 ${theme.shape?.buttonRadius || "rounded-xl"
+                  }`}
+              >
+                Admin Panel
+              </Link>
+            )}
         </div>
-
       </div>
     </header>
   );
