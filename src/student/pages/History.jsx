@@ -1,4 +1,4 @@
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 import { ShieldAlert, History, Lock, Smartphone, Globe, Info } from "lucide-react";
 
 export default function StudentHistory() {

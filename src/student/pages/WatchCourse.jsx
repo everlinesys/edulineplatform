@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../shared/api";
 import { getUser } from "../../shared/auth";
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import MobileSyllabus from "../components/MobileSyllabus";

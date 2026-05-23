@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 import {
   MdChevronLeft,
   MdExpandMore,

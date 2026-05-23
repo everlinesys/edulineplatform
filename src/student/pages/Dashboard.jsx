@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../shared/api";
 import { getUser } from "../../shared/auth";
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 import { Calendar, Clock, Video, Radio } from 'lucide-react';
 import { PlayCircle, BookOpen , CheckCircle,TrendingUp } from 'lucide-react';
 

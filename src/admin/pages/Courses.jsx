@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../shared/api";
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 import { Plus, MoreVertical, Users, IndianRupee, Trash2, Edit3, Settings, X } from "lucide-react";
 
 export default function Courses() {

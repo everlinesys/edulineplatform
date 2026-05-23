@@ -9,7 +9,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { getUser, logout } from "../../shared/auth";
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 export default function AdminHeader({ onMenuClick }) {
   const brand = useBranding();
   const [open, setOpen] = useState(false);

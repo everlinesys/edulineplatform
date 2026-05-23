@@ -1,4 +1,4 @@
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 
 export default function Terms() {
   const brand = useBranding();

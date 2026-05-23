@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../shared/api";
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 import { User, Mail, Calendar, Settings, ShieldCheck, BookOpen } from "lucide-react";
 
 export default function StudentProfile() {

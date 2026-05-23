@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../shared/api";
-import { useBranding } from "../../shared/hooks/brandingContext";
+import { useBranding } from "../../shared/hooks/BrandingContext";
 import { Award, Download, FileCheck, Trophy, ExternalLink, GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
