@@ -9,7 +9,7 @@ import themes from "../../config/themes.json";
 
 import {
   BrandingContext,
-} from "./brandingContext";
+} from "./BrandingContext";
 
 export default function BrandingProvider({
   children,
