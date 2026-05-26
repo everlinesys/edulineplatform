@@ -3,7 +3,7 @@ import {
   useState,
 } from "react";
 
-import axios from "axios";
+import api from "../../shared/api";
 
 import themes from "../../config/themes.json";
 
@@ -26,13 +26,20 @@ export default function BrandingProvider({
   }, []);
 
   async function loadBranding() {
+    
     try {
-      const res = await axios.get(
-        "/api/public/branding"
+      console.log(
+        "🌐 HOST:",
+        window.location.hostname
       );
 
+      const res =
+        await api.get(
+          "/public/branding"
+        );
+
       console.log(
-        "✅ Branding loaded",
+        "✅ BRANDING RESPONSE:",
         res.data
       );
 
@@ -42,7 +49,7 @@ export default function BrandingProvider({
       const theme =
         themes[
           brand.theme ||
-          "darkBox"
+            "darkBox"
         ] || {};
 
       const finalBranding = {
@@ -55,22 +62,27 @@ export default function BrandingProvider({
             brand.colors
               ?.primary ||
             brand.primaryColor ||
-            "#f94430",
+            "#30a5f9",
 
           accent:
             brand.colors
               ?.accent ||
             brand.accentColor ||
-            "#22C55E",
+            "#ffffff",
         },
       };
+
+      console.log(
+        "🎨 FINAL BRANDING:",
+        finalBranding
+      );
 
       setBranding(
         finalBranding
       );
     } catch (err) {
       console.error(
-        "❌ Branding load failed",
+        "❌ BRANDING LOAD FAILED:",
         err
       );
 
@@ -98,7 +110,7 @@ export default function BrandingProvider({
   }
 
   /* =========================================
-     DYNAMIC META
+     META TAGS
   ========================================= */
 
   useEffect(() => {
@@ -115,15 +127,15 @@ export default function BrandingProvider({
       "description",
 
       branding.metaDescription ||
-      branding.tagline ||
-      "Learning Platform"
+        branding.tagline ||
+        "Learning Platform"
     );
 
     // FAVICON
     updateFavicon(
       branding.favicon ||
-      branding.logo ||
-      "/favicon.ico"
+        branding.logo ||
+        "/favicon.ico"
     );
 
     // OPEN GRAPH
@@ -131,21 +143,21 @@ export default function BrandingProvider({
       "og:title",
 
       branding.metaTitle ||
-      branding.siteName
+        branding.siteName
     );
 
     updateMetaProperty(
       "og:description",
 
       branding.metaDescription ||
-      branding.tagline
+        branding.tagline
     );
 
     updateMetaProperty(
       "og:image",
 
       branding.logo ||
-      branding.favicon
+        branding.favicon
     );
   }, [branding]);
 
