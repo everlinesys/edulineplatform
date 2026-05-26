@@ -12,7 +12,7 @@ export default function AboutUs() {
     };
 
   return (
-    <div className="bg-white text-gray-800">
+    <div className="bg-white text-gray-800 w-[100vw]">
 
       {/* HERO */}
       <div className="relative h-[60vh] flex items-center justify-center text-center">
