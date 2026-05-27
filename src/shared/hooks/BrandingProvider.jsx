@@ -11,11 +11,21 @@ import {
   BrandingContext,
 } from "./BrandingContext";
 
+import FullPageLoader from "../../public/pages/FullPageLoader";
+import InstituteErrorState from "../../public/pages/InstituteErrorState";
+
 export default function BrandingProvider({
   children,
 }) {
+
   const [branding, setBranding] =
     useState(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState(false);
 
   /* =========================================
      LOAD BRANDING
@@ -26,12 +36,21 @@ export default function BrandingProvider({
   }, []);
 
   async function loadBranding() {
-    
+
     try {
+
+      setLoading(true);
+
+      setError(false);
+
       console.log(
         "🌐 HOST:",
         window.location.hostname
       );
+
+      /* =========================================
+         LOAD FROM API
+      ========================================= */
 
       const res =
         await api.get(
@@ -77,35 +96,69 @@ export default function BrandingProvider({
         finalBranding
       );
 
+      /* =========================================
+         CACHE
+      ========================================= */
+
+      localStorage.setItem(
+        "branding-cache",
+
+        JSON.stringify(
+          finalBranding
+        )
+      );
+
       setBranding(
         finalBranding
       );
+
     } catch (err) {
+
       console.error(
         "❌ BRANDING LOAD FAILED:",
         err
       );
 
-      // SAFE FALLBACK
-      setBranding({
-        siteName:
-          "Eduline",
+      setError(true);
 
-        tagline:
-          "Learning Platform",
+      /* =========================================
+         TRY CACHE
+      ========================================= */
 
-        theme:
-          themes.darkBox ||
-          {},
+      try {
 
-        colors: {
-          primary:
-            "#f94430",
+        const cached =
+          localStorage.getItem(
+            "branding-cache"
+          );
 
-          accent:
-            "#22C55E",
-        },
-      });
+        if (cached) {
+
+          const parsed =
+            JSON.parse(
+              cached
+            );
+
+          setBranding(
+            parsed
+          );
+
+          console.log(
+            "⚡ USING CACHED BRANDING"
+          );
+        }
+
+      } catch (cacheErr) {
+
+        console.error(
+          "CACHE ERROR:",
+          cacheErr
+        );
+      }
+
+    } finally {
+
+      setLoading(false);
     }
   }
 
@@ -114,6 +167,7 @@ export default function BrandingProvider({
   ========================================= */
 
   useEffect(() => {
+
     if (!branding) return;
 
     // TITLE
@@ -138,7 +192,7 @@ export default function BrandingProvider({
         "/favicon.ico"
     );
 
-    // OPEN GRAPH
+    // OG TITLE
     updateMetaProperty(
       "og:title",
 
@@ -146,6 +200,7 @@ export default function BrandingProvider({
         branding.siteName
     );
 
+    // OG DESCRIPTION
     updateMetaProperty(
       "og:description",
 
@@ -153,24 +208,38 @@ export default function BrandingProvider({
         branding.tagline
     );
 
+    // OG IMAGE
     updateMetaProperty(
       "og:image",
 
       branding.logo ||
         branding.favicon
     );
+
   }, [branding]);
 
   /* =========================================
-     LOADING
+     LOADING SCREEN
   ========================================= */
 
-  if (!branding) {
+  if (
+    loading &&
+    !branding
+  ) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-sm font-medium">
-        Loading...
-      </div>
+      <FullPageLoader />
     );
+  }
+
+  /* =========================================
+     ERROR STATE
+  ========================================= */
+
+  if (
+    error &&
+    !branding
+  ) {
+    return (<InstituteErrorState loadBranding={loadBranding} />)
   }
 
   /* =========================================
@@ -194,6 +263,7 @@ function updateMetaTag(
   name,
   content
 ) {
+
   if (!content) return;
 
   let element =
@@ -202,6 +272,7 @@ function updateMetaTag(
     );
 
   if (!element) {
+
     element =
       document.createElement(
         "meta"
@@ -227,6 +298,7 @@ function updateMetaProperty(
   property,
   content
 ) {
+
   if (!content) return;
 
   let element =
@@ -235,6 +307,7 @@ function updateMetaProperty(
     );
 
   if (!element) {
+
     element =
       document.createElement(
         "meta"
@@ -256,7 +329,10 @@ function updateMetaProperty(
   );
 }
 
-function updateFavicon(url) {
+function updateFavicon(
+  url
+) {
+
   if (!url) return;
 
   let link =
@@ -265,6 +341,7 @@ function updateFavicon(url) {
     );
 
   if (!link) {
+
     link =
       document.createElement(
         "link"

@@ -95,9 +95,9 @@ export default function PublicHeader() {
 
               <Link
                 to="/register"
-                className={`${theme.button?.primary || ""
+                className={`${theme.button?.primary || " "
                   } px-4 py-2 ${theme.shape?.buttonRadius || "rounded-xl"
-                  }`}
+                  } rounded-xl text-sm font-semibold`}
                 style={{
                   background:
                     colors.primary,
