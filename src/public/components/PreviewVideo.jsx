@@ -32,12 +32,12 @@ export default function PreviewVideo() {
 
           {videoId ? (
             <VideoPlayer
-              videoId={videoId}
-              poster={poster}
+              videoId={preview?.bunnyVideoId || hero?.bunnyVideoId}
+              poster={preview?.image || poster}
             />
           ) : (
             <img
-              src="/prv.avif"
+              src={preview?.image || "/prv.avif"}
               className="w-full md:w-[50vw] object-cover"
               alt="Preview"
             />

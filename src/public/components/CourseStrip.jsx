@@ -29,7 +29,7 @@ export default function FeaturedCoursesStrip() {
     };
 
     return (
-        <section className="bg-white py-6 overflow-hidden" id="courses"
+        <section className="bg-white pt-6 overflow-hidden" id="courses"
         >
 
             <div className="max-w-screen mx-auto px-6 py-6 md:px-16 " style={{ backgroundColor: brand.colors.primary }}>

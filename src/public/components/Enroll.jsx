@@ -38,12 +38,12 @@ ${form.message || "N/A"}
   }
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2"  style={{ backgroundColor: brand.primaryColor }}>
+    <div className="min-h-screen grid md:grid-cols-2"  style={{ backgroundColor: brand.colors?.primary || "#10b981" }}>
 
       {/* LEFT — Branding Panel */}
       <div
         className="hidden md:flex flex-col justify-center p-16 text-white"
-        style={{ backgroundColor: brand.primaryColor }}
+        style={{ backgroundColor: brand.colors?.primary || "#10b981" }}
       >
         {/* <h1 className="text-5xl font-black mb-6 leading-tight">
           {brand.hero?.title}
@@ -75,7 +75,7 @@ ${form.message || "N/A"}
 
           <h2
             className="text-3xl font-bold mb-2"
-            style={{ color: brand.primaryColor }}
+            style={{ color: brand.colors?.primary || "#10b981" }}
           >
             Enroll Now
           </h2>

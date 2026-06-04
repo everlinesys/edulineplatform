@@ -5,39 +5,18 @@ import { useState } from "react";
 export default function Hero() {
   const brandData = useBranding();
 
-  // FIX OLD STRUCTURE
-  const brand =
-    brandData?.default || brandData || {};
-
-  console.log("Brand in Hero", brand);
-
-  const [open, setOpen] = useState(true);
-
+  const brand = brandData?.default || brandData || {};
   const hero = brand.hero || {};
-
-  const theme = brand.theme || {};
-
   const colors = brand.colors || {
-    primary: "#f94430",
-    accent: "#22C55E",
+    primary: "#10b981",
+    accent: "#ffffff",
   };
 
-  const initials =
-    brand.name
-      ?.replace(/[^A-Za-z ]/g, "")
-      .split(" ")
-      .filter(Boolean)
-      .map((w) =>
-        w[0].toUpperCase()
-      )
-      .slice(0, 2) || ["A", "U"];
-
-  const whatsappNumber =
-    brand.contact?.whatsapp;
+  const [open, setOpen] = useState(true);
+  const whatsappNumber = brand.contact?.whatsapp;
 
   const openWhatsApp = () => {
     const text = `Hello ${brand.siteName}, I want to know more about your courses.`;
-
     window.open(
       `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`,
       "_blank"
@@ -45,184 +24,216 @@ export default function Hero() {
   };
 
   return (
-    <section
-      className={`${theme.layout?.container || ""
-        } relative overflow-hidden`}
-    >
-      <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center p-8 md:p-16">
+    <>
+      <section className="relative overflow-hidden bg-white">
+        {/* Background Grid & Decorative Blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Subtle Grid Overlay */}
+          <div
+            className="absolute inset-0 bg-[linear-gradient(to_right,#b2d7b9_1px,transparent_1px),linear-gradient(to_bottom,#b2d7b9_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-70"
+          />
+          {/* Radial Gradient to fade the grid out slightly at the edges */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,white_90%)]" />
 
-        {/* LEFT */}
-        <div className="space-y-6 text-center md:text-left">
+          {/* Soft blur accent circles */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-100 rounded-full blur-3xl opacity-40" />
+          <div className="absolute bottom-0 right-0 w-72 h-72 bg-slate-100 rounded-full blur-3xl opacity-50" />
+        </div>
 
-          {/* Mobile Image */}
-          <div className="relative md:hidden block group">
+        {/* Main Content Container (Enforced 16px horizontal padding) */}
+        <div className="relative z-10 max-w-6xl mx-auto px-4 py-8 md:py-14">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
 
-            {hero?.image ? (
-              <img
-                src={hero.image}
-                alt={brand.siteName}
-                className={`relative z-10 ${theme.shape?.radius || ""
-                  } object-cover aspect-[4/2] w-full`}
-              />
-            ) : (
-              <div
-                className={`relative z-10 ${theme.layout?.panel || ""
-                  } aspect-[4/3] w-full flex items-center justify-center`}
-              >
-                <div className="text-white/10 font-black text-8xl uppercase -rotate-12">
-                  Learn
+            {/* LEFT COLUMN */}
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 bg-white/80 backdrop-blur-sm text-xs font-medium text-slate-700">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                {brand.students > 0 ? brand.students : "100+"} Students Learning
+              </div>
+
+              <h1 className="mt-4 text-4xl md:text-5xl font-black tracking-tight leading-tight text-slate-900">
+                {hero.title || "Learn Skills That Move Your Career Forward"}
+              </h1>
+
+              <p className="mt-3 text-base text-slate-600 max-w-lg leading-relaxed">
+                {hero.subtitle ||
+                  "Practical courses, expert guidance, and a learning experience designed to help you achieve real results."}
+              </p>
+
+              <div className="flex flex-wrap gap-3 mt-6">
+                <a
+                  href="#courses"
+                  className="px-6 py-3 rounded-xl font-semibold text-white text-sm text-center transition hover:opacity-90 active:scale-95 shadow-sm"
+                  style={{ backgroundColor: colors.primary }}
+                >
+                  Explore Courses
+                </a>
+
+                {whatsappNumber && (
+                  <button
+                    onClick={openWhatsApp}
+                    className="px-6 py-3 rounded-xl border border-slate-200 bg-white/50 backdrop-blur-sm font-semibold text-sm flex items-center justify-center gap-2 hover:bg-slate-50 transition active:scale-95"
+                  >
+                    <MdWhatsapp size={18} className="text-emerald-600" />
+                    WhatsApp
+                  </button>
+                )}
+              </div>
+
+              {/* STATS */}
+              <div className="grid grid-cols-3 gap-2 mt-8 pt-6 border-t border-slate-200/60 max-w-sm">
+                <div>
+                  <div className="text-2xl font-black text-slate-900">
+                    {brand.students > 0 ? brand.students : "100+"}
+                  </div>
+                  <div className="text-xs text-slate-500">Students</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black text-slate-900">
+                    {brand.courses > 0 ? brand.courses : "2+"}
+                  </div>
+                  <div className="text-xs text-slate-500">Courses</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black text-slate-900">4.9★</div>
+                  <div className="text-xs text-slate-500">Rating</div>
                 </div>
               </div>
-            )}
-          </div>
-
-          {/* Badge */}
-          <div
-            className={`inline-flex items-center gap-2 px-3 py-1 ${theme.layout?.panel || ""
-              } ${theme.shape?.radius || ""}`}
-          >
-            <span className="relative flex h-2 w-2">
-              <span
-                className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-                style={{
-                  backgroundColor:
-                    colors.primary,
-                }}
-              />
-
-              <span
-                className="relative inline-flex rounded-full h-2 w-2"
-                style={{
-                  backgroundColor:
-                    colors.accent,
-                }}
-              />
-            </span>
-
-            <span
-              className={`text-[10px] uppercase tracking-widest ${theme.text?.label || ""
-                }`}
-            >
-              Live Learning Portal
-            </span>
-          </div>
-
-          {/* Title */}
-          <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight">
-            {hero?.title ||
-              "Welcome to eLearn"}
-          </h1>
-
-          {/* Subtitle */}
-          <p
-            className={`${theme.text?.body || ""
-              } opacity-80 max-w-lg text-xl`}
-          >
-            {hero?.subtitle ||
-              "Practical courses for real growth."}
-          </p>
-
-          {/* CTA */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-
-            <a
-              href="#courses"
-              className={`group inline-flex items-center justify-center px-8 py-4 font-black text-sm tracking-wide transition-all duration-300 active:scale-95 ${theme.button?.primary || ""
-                } ${theme.shape?.radius || ""
-                }`}
-              style={{
-                background:
-                  colors.primary,
-                color: colors.accent,
-              }}
-            >
-              Browse Courses
-            </a>
-
-            <div className="pl-2 text-xs font-bold opacity-70 uppercase tracking-tighter">
-              {brand.students || "500+"}
-              {" "}Students
             </div>
-          </div>
-        </div>
 
-        {/* RIGHT IMAGE */}
-        <div className="relative hidden md:block group">
-
-          {hero?.image ? (
-            <img
-              src={hero.image}
-              alt="Learning"
-              className={`relative z-10 ${theme.shape?.radius || ""
-                } object-cover aspect-[4/2.5] w-full`}
-            />
-          ) : (
-            <div
-              className={`relative z-10 ${theme.layout?.panel || ""
-                } aspect-[4/3] w-full flex items-center justify-center`}
-            >
-              <div className="text-white/10 font-black text-8xl uppercase -rotate-12">
-                Learn
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* WhatsApp */}
-      {whatsappNumber && (
-        <div className="fixed bottom-6 right-6 z-50">
-
-          {open && (
-            <div className="w-72 rounded-2xl shadow-2xl overflow-hidden mb-3 bg-white">
-
-              <div className="px-4 py-3 text-white font-bold bg-emerald-600 flex justify-between items-center">
-                {brand.siteName} Support
-
-                <button
-                  onClick={() =>
-                    setOpen(false)
-                  }
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="p-4 text-sm text-gray-700">
-                Welcome to{" "}
-                <b>{brand.siteName}</b>
-              </div>
-
-              <div className="p-3">
-                <button
-                  onClick={
-                    openWhatsApp
-                  }
-                  className="w-full py-3 text-white font-semibold rounded-full bg-emerald-600"
-                >
-                  <MdWhatsapp
-                    className="inline mr-2"
-                    size={20}
+            {/* RIGHT COLUMN */}
+            <div className="relative lg:mt-0 mt-6 max-w-md mx-auto lg:max-w-none w-full">
+              <div className="overflow-hidden rounded-2xl border border-slate-100 bg-transparent ">
+                {hero.image ? (
+                  <img
+                    src={hero.image}
+                    alt={brand.siteName}
+                    className="w-full aspect-[4/4] object-cover"
                   />
+                ) : (
+                  <div className="aspect-[4/3] flex items-center justify-center bg-slate-50">
+                    <span className="text-5xl font-black text-slate-200">
+                      {brand.siteName?.charAt(0) || "E"}
+                    </span>
+                  </div>
+                )}
+              </div>
 
-                  Chat on WhatsApp
-                </button>
+              {/* Compact Floating Card */}
+              <div className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg border border-slate-100 p-3 hidden sm:block">
+                <div className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                  Trusted By
+                </div>
+                <div className="text-lg font-black text-slate-900 leading-tight">
+                  {brand.students > 0 ? brand.students : "100+"}
+                </div>
+                <div className="text-xs text-slate-500">Active Learners</div>
               </div>
             </div>
-          )}
 
-          {!open && (
+          </div>
+        </div>
+      </section>
+
+      {/* WhatsApp Widget */}
+      {whatsappNumber && (
+        <div className="fixed bottom-5 right-5 z-50">
+
+          {open ? (
+            <div className="w-80 bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+
+              {/* Header */}
+              <div className="bg-emerald-600 px-4 py-4 text-white">
+
+                <div className="flex items-start justify-between">
+
+                  <div className="flex items-center gap-3">
+
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold">
+                      {brand.siteName?.charAt(0)}
+                    </div>
+
+                    <div>
+                      <div className="font-semibold text-sm">
+                        {brand.siteName}
+                      </div>
+
+                      <div className="text-[11px] text-emerald-100 flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-green-300"></span>
+                        Typically replies within minutes
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="text-white/80 hover:text-white"
+                  >
+                    ✕
+                  </button>
+
+                </div>
+
+              </div>
+
+              {/* Chat Area */}
+              <div className="bg-slate-50 p-4">
+
+                <div className="bg-white rounded-2xl rounded-tl-md p-3 shadow-sm max-w-[90%]">
+
+                  <div className="text-xs text-slate-700 leading-relaxed">
+                    👋 Welcome to <strong>{brand.siteName}</strong>.
+                    <br />
+                    Need help choosing a course, understanding fees,
+                    or finding the right learning path?
+                    Our team is here to help.
+                  </div>
+
+                  <div className="text-[10px] text-slate-400 mt-2">
+                    Just now
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* CTA */}
+              <div className="p-4 border-t border-slate-100">
+
+                <button
+                  onClick={openWhatsApp}
+                  className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center justify-center gap-2 transition"
+                >
+                  <MdWhatsapp size={20} />
+                  Start WhatsApp Chat
+                </button>
+
+                <p className="text-center text-[11px] text-slate-400 mt-2">
+                  Powered by {brand.siteName}
+                </p>
+
+              </div>
+
+            </div>
+          ) : (
             <button
-              onClick={() =>
-                setOpen(true)
-              }
-              className="w-16 h-16 rounded-full flex items-center justify-center text-white shadow-xl bg-emerald-600"
+              onClick={() => setOpen(true)}
+              className="relative w-14 h-14 rounded-full bg-emerald-600 text-white shadow-2xl flex items-center justify-center hover:scale-105 transition"
             >
-              <MdWhatsapp size={28} />
+
+              <span className="absolute inset-0 rounded-full bg-emerald-600 animate-ping opacity-20"></span>
+
+              <MdWhatsapp
+                size={28}
+                className="relative z-10"
+              />
+
             </button>
           )}
+
         </div>
       )}
-    </section>
+    </>
   );
 }

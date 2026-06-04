@@ -37,12 +37,53 @@ export default function AdminSettings() {
     previewTitle: "",
     previewHighlight: "",
     previewDescription: "",
+    previewImage: "",
+    previewVideo: "",
     email: "",
     phone: "",
     whatsapp: "",
     address: "",
-  });
 
+    reviews: []
+  });
+  function addReview() {
+    setForm((prev) => ({
+      ...prev,
+      reviews: [
+        ...(prev.reviews || []),
+        {
+          name: "",
+          role: "",
+          text: "",
+          rating: 5,
+        },
+      ],
+    }));
+  } function removeReview(index) {
+    setForm((prev) => ({
+      ...prev,
+      reviews: prev.reviews.filter(
+        (_, i) => i !== index
+      ),
+    }));
+  } function updateReview(
+    index,
+    field,
+    value
+  ) {
+    setForm((prev) => ({
+      ...prev,
+      reviews: prev.reviews.map(
+        (review, i) =>
+          i === index
+            ? {
+              ...review,
+              [field]: value,
+            }
+            : review
+      ),
+    }));
+  }
   useEffect(() => {
     if (!brand) return;
     setForm({
@@ -60,10 +101,13 @@ export default function AdminSettings() {
       previewTitle: brand.preview?.title || "",
       previewHighlight: brand.preview?.highlight || "",
       previewDescription: brand.preview?.description || "",
+      previewImage: brand.preview?.image || "",
+      previewVideo: brand.preview?.video || "",
       email: brand.contact?.email || "",
       phone: brand.contact?.phone || "",
       whatsapp: brand.contact?.whatsapp || "",
       address: brand.contact?.address || "",
+      reviews: brand.reviews || [],
     });
   }, [brand]);
 
@@ -91,14 +135,40 @@ export default function AdminSettings() {
       const payload = {
         siteName: form.siteName,
         tagline: form.tagline,
+
         metaTitle: form.metaTitle,
         metaDescription: form.metaDescription,
+
         logo: form.logo,
         favicon: form.favicon,
-        colors: { primary: form.primaryColor, accent: form.accentColor },
-        hero: { title: form.heroTitle, subtitle: form.heroSubtitle, image: form.heroImage },
-        preview: { title: form.previewTitle, highlight: form.previewHighlight, description: form.previewDescription },
-        contact: { email: form.email, phone: form.phone, whatsapp: form.whatsapp, address: form.address },
+
+        colors: {
+          primary: form.primaryColor,
+          accent: form.accentColor,
+        },
+
+        hero: {
+          title: form.heroTitle,
+          subtitle: form.heroSubtitle,
+          image: form.heroImage,
+        },
+
+        preview: {
+          title: form.previewTitle,
+          highlight: form.previewHighlight,
+          description: form.previewDescription,
+          image: form.previewImage,
+          video: form.previewVideo,
+        },
+
+        reviews: form.reviews || [],
+
+        contact: {
+          email: form.email,
+          phone: form.phone,
+          whatsapp: form.whatsapp,
+          address: form.address,
+        },
       };
 
       await api.put("/adminSettings/settings", payload);
@@ -115,7 +185,7 @@ export default function AdminSettings() {
   return (
     <div className="min-h-screen bg-slate-50/50 text-slate-800 antialiased font-sans p-4 md:p-8">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-[280px_1fr] gap-8 items-start">
-        
+
         {/* SIDEBAR */}
         <aside className="bg-white rounded-2xl border border-slate-200/80 p-5 lg:sticky lg:top-8 shadow-sm">
           <div className="px-2 py-1">
@@ -143,6 +213,20 @@ export default function AdminSettings() {
               onClick={() => setActiveTab("seo")}
               icon={<Globe className="w-4 h-4" />}
               label="SEO Metadata"
+              brandColor={primary}
+            /><SidebarButton
+              active={activeTab === "preview"}
+              onClick={() => setActiveTab("preview")}
+              icon={<ImageIcon className="w-4 h-4" />}
+              label="Preview Section"
+              brandColor={primary}
+            />
+
+            <SidebarButton
+              active={activeTab === "reviews"}
+              onClick={() => setActiveTab("reviews")}
+              icon={<Sparkles className="w-4 h-4" />}
+              label="Reviews"
               brandColor={primary}
             />
             <SidebarButton
@@ -199,7 +283,7 @@ export default function AdminSettings() {
             <Section title="Hero Display" description="This is the top-most introduction window banner visitors see first.">
               <Input label="Catchy Hero Headline" name="heroTitle" value={form.heroTitle} onChange={handleChange} placeholder="Welcome to Premium Education Hub" />
               <Textarea label="Subtext / Descriptive Paragraph" name="heroSubtitle" value={form.heroSubtitle} onChange={handleChange} placeholder="Provide a brief context here explaining your services..." />
-              <ImagePicker label="Hero Banner Image Background" value={form.heroImage} onUpload={(file) => uploadImage(file, "heroImage")} aspect="banner" />
+              <ImagePicker label="Hero Image" value={form.heroImage} onUpload={(file) => uploadImage(file, "heroImage")} aspect="banner" />
             </Section>
           )}
 
@@ -207,6 +291,172 @@ export default function AdminSettings() {
             <Section title="Search Optimization" description="Help your business rank properly across index crawlers.">
               <Input label="Global SEO Title Page" name="metaTitle" value={form.metaTitle} onChange={handleChange} placeholder="Acme Institute | Best Technical Courses Online" />
               <Textarea label="Snippet Meta Description" name="metaDescription" value={form.metaDescription} onChange={handleChange} placeholder="Provide descriptive context within 160 characters..." />
+            </Section>
+          )}
+          {activeTab === "preview" && (
+            <Section
+              title="Course Preview"
+              description="Show what students can expect."
+            >
+              <Input
+                label="Title"
+                name="previewTitle"
+                value={form.previewTitle}
+                onChange={handleChange}
+              />
+
+              <Input
+                label="Highlight"
+                name="previewHighlight"
+                value={form.previewHighlight}
+                onChange={handleChange}
+              />
+
+              <Textarea
+                label="Description"
+                name="previewDescription"
+                value={form.previewDescription}
+                onChange={handleChange}
+              />
+
+              <ImagePicker
+                label="Preview Image"
+                value={form.previewImage}
+                onUpload={(file) =>
+                  uploadImage(file, "previewImage")
+                }
+                aspect="banner"
+              />
+
+              {/* <Input
+                label="Preview Video URL"
+                name="previewVideo"
+                value={form.previewVideo}
+                onChange={handleChange}
+                placeholder="https://youtube.com/watch?v=..."
+              /> */}
+            </Section>
+          )}{activeTab === "reviews" && (
+            <Section
+              title="Student Reviews"
+              description="Add testimonials from students."
+            >
+              <div className="space-y-4">
+
+                {(form.reviews ?? []).length === 0 && (
+                  <div className="border-2 border-dashed border-slate-200 rounded-xl p-8 text-center">
+                    <p className="text-sm text-slate-500">
+                      No reviews added yet.
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={addReview}
+                      className="mt-4 px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium"
+                    >
+                      Add First Review
+                    </button>
+                  </div>
+                )}
+
+                {(form.reviews ?? []).map((review, index) => (
+                  <div
+                    key={index}
+                    className="border border-slate-200 rounded-xl p-5 space-y-4 bg-slate-50/30"
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold text-slate-900">
+                        Review #{index + 1}
+                      </h4>
+
+                      <button
+                        type="button"
+                        onClick={() => removeReview(index)}
+                        className="text-red-500 hover:text-red-600 text-sm font-medium"
+                      >
+                        Remove
+                      </button>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+
+                      <Input
+                        label="Student Name"
+                        value={review.name || ""}
+                        onChange={(e) =>
+                          updateReview(
+                            index,
+                            "name",
+                            e.target.value
+                          )
+                        }
+                        placeholder="John Doe"
+                      />
+
+                      <Input
+                        label="Role"
+                        value={review.role || ""}
+                        onChange={(e) =>
+                          updateReview(
+                            index,
+                            "role",
+                            e.target.value
+                          )
+                        }
+                        placeholder="Student"
+                      />
+
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-2">
+                        Rating
+                      </label>
+
+                      <select
+                        value={review.rating || 5}
+                        onChange={(e) =>
+                          updateReview(
+                            index,
+                            "rating",
+                            Number(e.target.value)
+                          )
+                        }
+                        className="w-full text-sm border border-slate-200 bg-slate-50/30 rounded-xl px-3.5 py-2.5 outline-none"
+                      >
+                        <option value={5}>⭐⭐⭐⭐⭐ (5)</option>
+                        <option value={4}>⭐⭐⭐⭐ (4)</option>
+                        <option value={3}>⭐⭐⭐ (3)</option>
+                        <option value={2}>⭐⭐ (2)</option>
+                        <option value={1}>⭐ (1)</option>
+                      </select>
+                    </div>
+
+                    <Textarea
+                      label="Review"
+                      rows={4}
+                      value={review.text || ""}
+                      onChange={(e) =>
+                        updateReview(
+                          index,
+                          "text",
+                          e.target.value
+                        )
+                      }
+                      placeholder="Write the student's feedback..."
+                    />
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={addReview}
+                  className="w-full py-3 border-2 border-dashed border-slate-300 rounded-xl text-sm font-semibold hover:bg-slate-50 transition"
+                >
+                  + Add Review
+                </button>
+
+              </div>
             </Section>
           )}
 
@@ -303,11 +553,10 @@ function SidebarButton({ active, label, icon, onClick, brandColor }) {
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all ${
-        active 
-          ? "bg-slate-900 text-white shadow-sm" 
-          : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
-      }`}
+      className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all ${active
+        ? "bg-slate-900 text-white shadow-sm"
+        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
+        }`}
       style={active ? { backgroundColor: brandColor } : {}}
     >
       <span className={active ? "text-white" : "text-slate-400"}>{icon}</span>
@@ -390,7 +639,7 @@ function ImagePicker({ label, value, onUpload, aspect = "landscape" }) {
             <ImageIcon className="w-5 h-5 text-slate-400" />
           )}
         </div>
-        
+
         <div className="flex-1 min-w-0">
           <p className="text-xs text-slate-500 truncate mb-2">{value ? "Asset linked successfully" : "No image selected yet"}</p>
           <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 cursor-pointer shadow-sm active:scale-[0.98] transition-all">
@@ -401,7 +650,7 @@ function ImagePicker({ label, value, onUpload, aspect = "landscape" }) {
               hidden
               accept="image/*"
               onChange={(e) => {
-                if(e.target.files?.[0]) onUpload(e.target.files[0]);
+                if (e.target.files?.[0]) onUpload(e.target.files[0]);
               }}
             />
           </label>
