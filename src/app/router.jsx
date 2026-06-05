@@ -19,8 +19,10 @@ import StudentHistory from "../student/pages/History";
 import WatchCourse from "../student/pages/WatchCourse";
 
 import AdminDashboard from "../admin/pages/Dashboard";
+import AdminPayments from "../admin/pages/AdminPayments";
 import AdminCourses from "../admin/pages/Courses";
 import AdminStudents from "../admin/pages/Students";
+import AdminEduline from "../admin/pages/AdminEduline";
 import EditCourse from "../admin/pages/EditCourse";
 import CourseCurriculum from "../admin/pages/CourseCurriculum";
 import PageNotFound from "../public/pages/PageNotFound";
@@ -84,6 +86,8 @@ export const router = createBrowserRouter([
                     { path: "course/:id/manage", element: <CourseCurriculum /> },
                     { path: "students", element: <AdminStudents /> },
                     { path: "settings", element: <AdminSettings /> },
+                      { path: "eduline", element: <AdminEduline /> },
+                    { path: "payments", element: <AdminPayments /> }
                 ],
             },
         ],

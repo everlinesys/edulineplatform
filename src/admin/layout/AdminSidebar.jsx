@@ -5,6 +5,7 @@ import {
   MdPeople,
   MdSettings,
   MdAdd,
+  MdPayments,MdBusiness
 } from "react-icons/md";
 import { useBranding } from "../../shared/hooks/BrandingContext";
 import { useEffect, useState } from "react";
@@ -20,6 +21,17 @@ export default function AdminSidebar({ open, onClose }) {
     { name: "Dashboard", path: "/admin", icon: <MdDashboard size={20} /> },
     { name: "Courses", path: "/admin/courses", icon: <MdMenuBook size={20} /> },
     { name: "Students", path: "/admin/students", icon: <MdPeople size={20} /> },
+
+    {
+      name: "Payments",
+      path: "/admin/payments",
+      icon: <MdPayments size={20} />,
+    },
+    {
+      name: "My Eduline",
+      path: "/admin/eduline",
+      icon: <MdBusiness size={20} />,
+    },
     { name: "Settings", path: "/admin/settings", icon: <MdSettings size={20} /> },
   ];
 
