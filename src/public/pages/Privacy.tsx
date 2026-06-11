@@ -1,7 +1,7 @@
 import { useBranding } from "../../shared/hooks/BrandingContext";
 
 export default function Privacy() {
-  const brand = useBranding();
+  const brand = useBranding()||{ siteName: "Eduline", theme: { layout: { container: "" }, text: { title: "", body: "" } }, contact: { email: "support@eduline.com" } };
 
   return (
     <div className={`${brand.theme.layout.container} my-0 px-6 md:px-16 min-w-[100vw]`} style={{ marginTop: 0 }}>
