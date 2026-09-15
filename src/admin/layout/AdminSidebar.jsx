@@ -5,7 +5,7 @@ import {
   MdPeople,
   MdSettings,
   MdAdd,
-  MdPayments,MdBusiness
+  MdPayments, MdBusiness
 } from "react-icons/md";
 import { useBranding } from "../../shared/hooks/BrandingContext";
 import { useEffect, useState } from "react";
@@ -69,8 +69,8 @@ export default function AdminSidebar({ open, onClose }) {
           md:translate-x-0
         `}
         style={{
-          background: brand.colors.primary,
-          color: brand.colors.accent,
+          background: "black" || brand.colors.primary,
+          color: "white" || brand.colors.accent,
         }}
       >
         {/* LOGO */}
