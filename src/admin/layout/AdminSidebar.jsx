@@ -89,10 +89,10 @@ export default function AdminSidebar({ open, onClose }) {
               className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition"
               style={({ isActive }) => ({
                 color: isActive
-                  ? brand.colors.primary
-                  : brand.colors.accent,
+                  ? "white" || brand.colors.primary
+                  : "gray" || brand.colors.accent,
                 background: isActive
-                  ? brand.colors.accent
+                  ? "gray" || brand.colors.accent
                   : "transparent",
               })}
             >
